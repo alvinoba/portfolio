@@ -22,3 +22,19 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# Node
+node_modules/
+dist/
+
+# Astro
+.cache/
+
+# VS Code
+.vscode/
+.vscode-server/
+
+# System junk
+.local/
+.cache/
+.gradle/
