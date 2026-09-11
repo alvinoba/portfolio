@@ -1,0 +1,111 @@
+---
+// src/components/ResponsivePretext.astro
+interface Props {
+  text: string;
+  font?: string;
+  lineHeight?: number;
+}
+
+const { 
+  text = "Pretext calculates responsive multiline text layout using pure JS arithmetic without triggering browser reflows or DOM layout thrashing.", 
+  font = "16px Inter, sans-serif", 
+  lineHeight = 24 
+} = Astro.props;
+---
+
+<div class="pretext-responsive-wrapper" data-text={text} data-font={font} data-line-height={lineHeight}>
+  <div class="metrics-badge">Resizing...</div>
+  <canvas class="pretext-canvas"></canvas>
+</div>
+
+<script>
+  import { prepare, layout } from '@chenglou/pretext';
+
+  const wrappers = document.querySelectorAll<HTMLElement>('.pretext-responsive-wrapper');
+
+  wrappers.forEach((wrapper) => {
+    const text = wrapper.dataset.text || '';
+    const font = wrapper.dataset.font || '16px sans-serif';
+    const lineHeight = Number(wrapper.dataset.lineHeight) || 24;
+
+    const canvas = wrapper.querySelector<HTMLCanvasElement>('.pretext-canvas');
+    const badge = wrapper.querySelector<HTMLElement>('.metrics-badge');
+
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    // STEP 1: Wait for custom web fonts to be loaded before preparation
+    document.fonts.ready.then(() => {
+      // PREPARATION (Heavy path): Done ONLY ONCE per text/font combo
+      const prepared = prepare(text, font);
+
+      // Function to render text on width changes
+      const updateLayout = (containerWidth: number) => {
+        // LAYOUT (Hot path): Pure sub-microsecond arithmetic
+        const result = layout(prepared, containerWidth, lineHeight);
+
+        // Update canvas surface size
+        canvas.width = containerWidth;
+        canvas.height = result.height;
+
+        // Render lines onto canvas
+        ctx.font = font;
+        ctx.fillStyle = '#1e293b';
+
+        // Draw text
+        result.lines?.forEach((line, index) => {
+          ctx.fillText(line.text, 0, (index + 1) * lineHeight - 4);
+        });
+
+        // Update UI info
+        if (badge) {
+          badge.textContent = `${containerWidth}px width ➔ ${result.lineCount} lines (${result.height}px high)`;
+        }
+      };
+
+      // STEP 2: Use ResizeObserver to detect container size changes
+      const observer = new ResizeObserver((entries) => {
+        for (const entry of entries) {
+          // Get exact width of parent container
+          const newWidth = Math.floor(entry.contentRect.width);
+          if (newWidth > 0) {
+            // RequestAnimationFrame ensures render aligns with display refresh rate
+            requestAnimationFrame(() => updateLayout(newWidth));
+          }
+        }
+      });
+
+      // Observe parent element
+      observer.observe(wrapper);
+    });
+  });
+</script>
+
+<style>
+  .pretext-responsive-wrapper {
+    width: 100%; /* Resizes with page layout */
+    max-width: 800px;
+    padding: 1.25rem;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    box-sizing: border-box;
+  }
+
+  .metrics-badge {
+    font-size: 0.75rem;
+    font-family: monospace;
+    color: #0284c7;
+    background: #e0f2fe;
+    display: inline-block;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    margin-bottom: 0.75rem;
+  }
+
+  canvas {
+    display: block;
+    width: 100%;
+  }
+</style>

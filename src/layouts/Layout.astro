@@ -1,0 +1,250 @@
+---
+// Futuristic Cyberpunk Portfolio Layout
+import PageTransitionLoader from '../components/PageTransitionLoader.astro';
+import '../styles/globals.css';
+---
+
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+		<meta name="generator" content={Astro.generator} />
+		<meta name="theme-color" content="#080810" />
+		<title>Portfolio // SYSTEM ONLINE</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+	</head>
+	<body class="bg-cyber-darker text-white font-sans antialiased overflow-x-hidden">
+		<!-- Page Transition Loader (Boot Sequence) -->
+		<PageTransitionLoader />
+
+		<!-- Fixed Background with Neon Glows -->
+		<div class="fixed inset-0 -z-20 bg-cyber-darker">
+			<!-- Radial gradient glowing orbs -->
+			<div class="absolute top-0 left-1/4 w-96 h-96 bg-neon-cyan opacity-5 blur-3xl rounded-full mix-blend-screen"></div>
+			<div class="absolute bottom-0 right-1/4 w-96 h-96 bg-neon-magenta opacity-5 blur-3xl rounded-full mix-blend-screen"></div>
+			<div class="absolute top-1/2 right-0 w-80 h-80 bg-neon-purple opacity-5 blur-3xl rounded-full mix-blend-screen"></div>
+		</div>
+
+		<!-- Grid Overlay Pattern -->
+		<div class="fixed inset-0 -z-10 opacity-[0.02] pointer-events-none" style="background-image: linear-gradient(0deg, transparent 24%, rgba(0, 243, 255, 0.05) 25%, rgba(0, 243, 255, 0.05) 26%, transparent 27%, transparent 74%, rgba(0, 243, 255, 0.05) 75%, rgba(0, 243, 255, 0.05) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, rgba(0, 243, 255, 0.05) 25%, rgba(0, 243, 255, 0.05) 26%, transparent 27%, transparent 74%, rgba(0, 243, 255, 0.05) 75%, rgba(0, 243, 255, 0.05) 76%, transparent 77%, transparent); background-size: 50px 50px;"></div>
+
+		<!-- Subtle scanlines effect -->
+		<div class="fixed inset-0 -z-10 pointer-events-none opacity-[0.03]" style="background: repeating-linear-gradient(0deg, transparent 0, transparent 2px, rgba(0, 243, 255, 0.3) 2px, rgba(0, 243, 255, 0.3) 4px); animation: scanlines 8s linear infinite;"></div>
+
+		<!-- Main content wrapper with transition animation -->
+		<div class="relative z-0 page-content">
+			<slot />
+		</div>
+
+		<!-- Floating particles (optional decorative elements) -->
+		<div class="fixed inset-0 -z-10 pointer-events-none overflow-hidden">
+			<div class="absolute top-20 left-10 w-2 h-2 bg-neon-cyan rounded-full animate-pulse opacity-50"></div>
+			<div class="absolute top-40 right-20 w-1 h-1 bg-neon-magenta rounded-full animate-pulse opacity-40" style="animation-delay: 2s;"></div>
+			<div class="absolute bottom-32 left-1/3 w-1.5 h-1.5 bg-neon-purple rounded-full animate-pulse opacity-50" style="animation-delay: 4s;"></div>
+		</div>
+	</body>
+</html>
+
+<style is:global>
+	* {
+		margin: 0;
+		padding: 0;
+		box-sizing: border-box;
+	}
+
+	html {
+		scroll-behavior: smooth;
+	}
+
+	body {
+		background-color: #080810;
+		color: #ffffff;
+		font-family: 'Inter', sans-serif;
+		overflow-x: hidden;
+	}
+
+	/* Monospace for headings and special text */
+	.font-mono {
+		font-family: 'Space Mono', monospace;
+	}
+
+	/* Custom scrollbar */
+	::-webkit-scrollbar {
+		width: 12px;
+	}
+
+	::-webkit-scrollbar-track {
+		background: rgba(0, 243, 255, 0.05);
+	}
+
+	::-webkit-scrollbar-thumb {
+		background: rgba(0, 243, 255, 0.3);
+		border-radius: 6px;
+		border: 3px solid transparent;
+		background-clip: content-box;
+	}
+
+	::-webkit-scrollbar-thumb:hover {
+		background: rgba(0, 243, 255, 0.6);
+		background-clip: content-box;
+	}
+
+	/* Selection styling */
+	::selection {
+		background-color: rgba(0, 243, 255, 0.3);
+		color: #00f3ff;
+	}
+
+	/* Smooth transitions globally */
+	button,
+	a,
+	input,
+	textarea,
+	select {
+		transition: all 300ms ease-out;
+	}
+
+	/* Neon glow text utility */
+	.text-neon-glow {
+		text-shadow: 0 0 10px rgba(0, 243, 255, 0.8), 0 0 20px rgba(0, 243, 255, 0.5);
+	}
+
+	.text-neon-glow-magenta {
+		text-shadow: 0 0 10px rgba(255, 0, 127, 0.8), 0 0 20px rgba(255, 0, 127, 0.5);
+	}
+
+	/* Border glow utility */
+	.border-glow {
+		border: 1px solid rgba(0, 243, 255, 0.5);
+		box-shadow: 0 0 10px rgba(0, 243, 255, 0.3), inset 0 0 10px rgba(0, 243, 255, 0.1);
+	}
+
+	/* Glassmorphism effect */
+	.glass {
+		background: rgba(8, 8, 16, 0.7);
+		backdrop-filter: blur(10px);
+		border: 1px solid rgba(0, 243, 255, 0.2);
+	}
+
+	/* Deep neon border */
+	.neon-border {
+		border: 1px solid rgba(0, 243, 255, 0.5);
+		box-shadow: 0 0 20px rgba(0, 243, 255, 0.3), inset 0 0 20px rgba(0, 243, 255, 0.1);
+	}
+
+	/* Scanlines animation */
+	@keyframes scanlines {
+		0% {
+			background-position: 0 0;
+		}
+		100% {
+			background-position: 0 100px;
+		}
+	}
+
+	/* Page Transition Animations - CSS View Transitions API */
+	@supports (view-transition-name: auto) {
+		::view-transition-old(root) {
+			animation: pageOut 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+		}
+
+		::view-transition-new(root) {
+			animation: pageIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+		}
+	}
+
+	@keyframes pageOut {
+		0% {
+			opacity: 1;
+			transform: translateX(0);
+		}
+		100% {
+			opacity: 0;
+			transform: translateX(-10px);
+		}
+	}
+
+	@keyframes pageIn {
+		0% {
+			opacity: 0;
+			transform: translateX(10px);
+		}
+		100% {
+			opacity: 1;
+			transform: translateX(0);
+		}
+	}
+
+	/* Stagger animations for page elements */
+	@keyframes elementSlideUp {
+		from {
+			opacity: 0;
+			transform: translateY(30px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	@keyframes elementFadeIn {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
+	}
+
+	/* Apply stagger animation to main sections */
+	.page-content > section {
+		animation: elementSlideUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) both;
+	}
+
+	.page-content > section:nth-child(1) {
+		animation-delay: 0.1s;
+	}
+
+	.page-content > section:nth-child(2) {
+		animation-delay: 0.2s;
+	}
+
+	.page-content > section:nth-child(3) {
+		animation-delay: 0.3s;
+	}
+
+	.page-content > section:nth-child(4) {
+		animation-delay: 0.4s;
+	}
+
+	.page-content > section:nth-child(5) {
+		animation-delay: 0.5s;
+	}
+
+	/* Cyber glitch effect on transition (optional enhancement) */
+	@keyframes cyberGlitch {
+		0% {
+			clip-path: inset(40% 0 61% 0);
+		}
+		20% {
+			clip-path: inset(92% 0 1% 0);
+		}
+		40% {
+			clip-path: inset(43% 0 1% 0);
+		}
+		60% {
+			clip-path: inset(25% 0 58% 0);
+		}
+		80% {
+			clip-path: inset(54% 0 7% 0);
+		}
+		100% {
+			clip-path: inset(58% 0 43% 0);
+		}
+	}
+</style>

@@ -1,0 +1,174 @@
+---
+// SkillsMatrix.astro - Futuristic Skills Dashboard
+interface SkillCategory {
+	name: string;
+	icon: string;
+	skills: Array<{
+		name: string;
+	}>;
+}
+
+const skillsData: SkillCategory[] = [
+	{
+		name: 'Languages',
+		icon: '{ }',
+		skills: [
+			{ name: 'TypeScript' },
+			{ name: 'JavaScript' },
+			{ name: 'Python' },
+			{ name: 'HTML/CSS' },
+			{ name: 'C++' },
+		],
+	},
+	{
+		name: 'Frameworks',
+		icon: '⚛️',
+		skills: [
+			{ name: 'React' },
+			{ name: 'Pretext.js' },
+			{ name: 'Astro' },
+			{ name: 'Flutter' },
+			{ name: 'Tailwind CSS'},
+		],
+	},
+	{
+		name: 'Tools & Platforms',
+		icon: '🛠️',
+		skills: [
+			{ name: 'Git/GitHub' },
+			{ name: 'Docker' },
+			{ name: 'AWS' },
+			{ name: 'VS Code' },
+			{ name: 'Figma'},
+		],
+	},
+];
+---
+
+<section class="w-full px-4 sm:px-6 lg:px-8 py-20 sm:py-32 relative overflow-hidden">
+	<!-- Section Header -->
+	<div class="max-w-6xl mx-auto mb-12 sm:mb-16">
+		<div class="flex items-center gap-3 mb-4">
+			<div class="w-3 h-3 rounded-full bg-neon-magenta animate-pulse" style="box-shadow: 0 0 10px rgba(255, 0, 127, 0.8);"></div>
+			<span class="font-mono text-xs sm:text-sm text-neon-magenta tracking-wider">SKILL MATRIX</span>
+		</div>
+
+		<div class="mb-8">
+			<h2 class="text-4xl sm:text-5xl lg:text-6xl font-mono font-bold mb-4">
+				<span class="text-neon-magenta">[ </span>
+				<span class="text-white">TECHNICAL PROFICIENCY</span>
+				<span class="text-neon-magenta"> ]</span>
+			</h2>
+			<div class="h-px w-32 sm:w-48 bg-gradient-to-r from-neon-magenta to-transparent"></div>
+		</div>
+
+		<p class="text-gray-300 text-base sm:text-lg max-w-2xl">
+			Comprehensive expertise across modern web technologies, demonstrated through hands-on development and continuous learning.
+		</p>
+	</div>
+
+	<!-- Skills Matrix Grid -->
+	<div class="max-w-6xl mx-auto">
+		<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+			{skillsData.map((category, categoryIndex) => (
+				<div 
+					class="group rounded-lg border border-neon-magenta/30 bg-cyber-black/40 backdrop-blur-md p-6 sm:p-8 transition-all duration-300 hover:border-neon-magenta/80 hover:shadow-[0_0_30px_rgba(255,0,127,0.3)]"
+					style={`animation: fadeIn 0.6s ease-out ${categoryIndex * 0.2}s both;`}
+				>
+					<!-- Category Header -->
+					<div class="flex items-center gap-3 mb-6">
+						<div class="text-2xl font-mono">{category.icon}</div>
+						<h3 class="text-lg sm:text-xl font-mono font-bold text-neon-magenta">
+							{category.name}
+						</h3>
+					</div>
+
+					<!-- Skills List -->
+					<div class="space-y-4">
+						{category.skills.map((skill) => (
+							<div class="space-y-2">
+								<!-- Skill Name -->
+								<div class="flex justify-between items-center">
+									<span class="text-sm font-mono text-white">{skill.name}</span>
+									<span class="text-xs font-mono text-neon-cyan opacity-70">{skill.level}</span>
+								</div>
+
+								<!-- Progress Bar -->
+								<div class="relative h-2 bg-cyber-dark rounded-full overflow-hidden border border-neon-magenta/20">
+									<div 
+										class="h-full bg-gradient-to-r from-neon-magenta to-neon-cyan rounded-full transition-all duration-1000 ease-out shadow-[0_0_10px_rgba(255,0,127,0.6)]"
+										style={`width: ${skill.level}; animation: fillBar 1s ease-out ${categoryIndex * 0.2}s both;`}
+									></div>
+									<!-- Glow effect -->
+									<div 
+										class="absolute top-0 h-full bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-30 transition-opacity duration-300"
+										style={`width: ${skill.level};`}
+									></div>
+								</div>
+							</div>
+						))}
+					</div>
+
+					<!-- Category Footer -->
+					<div class="mt-8 pt-6 border-t border-neon-magenta/20">
+						<p class="text-xs text-gray-400 font-mono">
+							{ category.name === 'Languages' && 'Core programming languages' }
+							{ category.name === 'Frameworks' && 'Web development frameworks' }
+							{ category.name === 'Tools & Platforms' && 'Development tools & services' }
+						</p>
+					</div>
+				</div>
+			))}
+		</div>
+	</div>
+
+	<!-- Stats Section -->
+	<div class="max-w-6xl mx-auto mt-16 sm:mt-20">
+		<div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+			{[
+				{ label: 'YEARS EXP', value: '2+' },
+				{ label: 'PROJECTS', value: '3+' },
+				{ label: 'TECHNOLOGIES', value: '10+' },
+				{ label: 'CERTIFICATIONS', value: '5+' },
+			].map((stat, index) => (
+				<div 
+					class="text-center p-4 sm:p-6 rounded-lg border border-neon-purple/30 bg-cyber-black/40 backdrop-blur-md"
+					style={`animation: fadeIn 0.6s ease-out ${(index + 3) * 0.15}s both;`}
+				>
+					<div class="text-2xl sm:text-3xl font-mono font-bold text-neon-purple mb-2">
+						{stat.value}
+					</div>
+					<div class="text-xs sm:text-sm font-mono text-gray-400">
+						{stat.label}
+					</div>
+				</div>
+			))}
+		</div>
+	</div>
+
+	<!-- Decorative elements -->
+	<div class="absolute top-40 left-0 w-96 h-96 bg-neon-magenta/5 rounded-full blur-3xl pointer-events-none opacity-30"></div>
+	<div class="absolute bottom-0 right-0 w-80 h-80 bg-neon-purple/5 rounded-full blur-3xl pointer-events-none opacity-30"></div>
+</section>
+
+<style scoped>
+	@keyframes fadeIn {
+		from {
+			opacity: 0;
+			transform: translateY(20px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	@keyframes fillBar {
+		from {
+			width: 0;
+		}
+		to {
+			width: var(--skill-level);
+		}
+	}
+</style>

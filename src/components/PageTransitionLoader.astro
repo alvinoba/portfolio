@@ -1,0 +1,225 @@
+---
+// PageTransitionLoader.astro - Cyberpunk Boot Sequence & Initial Loader
+---
+
+<div id="page-loader" class="fixed inset-0 z-50 pointer-events-none">
+	<!-- Black Background Curtain -->
+	<div id="loader-backdrop" class="absolute inset-0 bg-cyber-darker"></div>
+
+	<!-- Grid Overlay Background -->
+	<div class="absolute inset-0 opacity-[0.03]" style="background-image: linear-gradient(0deg, transparent 24%, rgba(0, 243, 255, 0.05) 25%, rgba(0, 243, 255, 0.05) 26%, transparent 27%, transparent 74%, rgba(0, 243, 255, 0.05) 75%, rgba(0, 243, 255, 0.05) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, rgba(0, 243, 255, 0.05) 25%, rgba(0, 243, 255, 0.05) 26%, transparent 27%, transparent 74%, rgba(0, 243, 255, 0.05) 75%, rgba(0, 243, 255, 0.05) 76%, transparent 77%, transparent); background-size: 50px 50px;"></div>
+
+	<!-- Scanlines Effect -->
+	<div class="absolute inset-0 opacity-[0.05]" style="background: repeating-linear-gradient(0deg, transparent 0, transparent 2px, rgba(0, 243, 255, 0.3) 2px, rgba(0, 243, 255, 0.3) 4px); animation: scanlines 8s linear infinite;"></div>
+
+	<!-- Radiant Glow Orbs -->
+	<div class="absolute top-1/4 left-1/4 w-96 h-96 bg-neon-cyan opacity-10 blur-3xl rounded-full mix-blend-screen pointer-events-none animate-pulse"></div>
+	<div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-neon-magenta opacity-10 blur-3xl rounded-full mix-blend-screen pointer-events-none" style="animation: pulse 4s ease-in-out infinite; animation-delay: 1s;"></div>
+
+	<!-- Main Content Container -->
+	<div class="absolute inset-0 flex flex-col items-center justify-center">
+		<!-- Top Corner Brackets -->
+		<div class="absolute top-8 left-8 w-8 h-8 border-t-2 border-l-2 border-neon-cyan opacity-50"></div>
+		<div class="absolute top-8 right-8 w-8 h-8 border-t-2 border-r-2 border-neon-cyan opacity-50"></div>
+
+		<!-- Main Content -->
+		<div class="text-center px-4">
+			<!-- Logo / System Icon -->
+			<div class="mb-8 flex justify-center">
+				<div class="relative w-24 h-24 flex items-center justify-center">
+					<!-- Rotating outer ring -->
+					<div class="absolute inset-0 border-2 border-transparent border-t-neon-cyan border-r-neon-cyan rounded-full animate-spin" style="animation: spin 3s linear infinite;"></div>
+					<!-- Inner glow circle -->
+					<div class="w-16 h-16 rounded-full border border-neon-cyan bg-neon-cyan/5" style="box-shadow: 0 0 20px rgba(0, 243, 255, 0.6), inset 0 0 20px rgba(0, 243, 255, 0.2);"></div>
+					<!-- Center dot -->
+					<div class="absolute w-4 h-4 rounded-full bg-neon-cyan" style="box-shadow: 0 0 10px rgba(0, 243, 255, 0.8);"></div>
+				</div>
+			</div>
+
+			<!-- Main Heading -->
+			<div class="mb-6">
+				<h1 class="text-3xl sm:text-4xl md:text-5xl font-mono font-bold mb-4">
+					<span class="text-neon-cyan" style="text-shadow: 0 0 10px rgba(0, 243, 255, 0.8); animation: glow-text 2s ease-in-out infinite;">
+						SYSTEM BOOT SEQUENCE
+					</span>
+				</h1>
+				<div class="h-px w-48 mx-auto bg-gradient-to-r from-transparent via-neon-cyan to-transparent"></div>
+			</div>
+
+			<!-- Status Messages (Typewriter Effect) -->
+			<div id="status-messages" class="mb-8 text-left max-w-md mx-auto space-y-2">
+				<div class="font-mono text-xs sm:text-sm text-gray-400">
+					<span class="text-neon-cyan">$</span> Initializing core systems...
+				</div>
+				<div class="font-mono text-xs sm:text-sm text-gray-400 opacity-0" style="animation: fadeIn 0.5s ease-out 0.5s forwards;">
+					<span class="text-neon-cyan">$</span> Diagnostic scan in progress...
+				</div>
+				<div class="font-mono text-xs sm:text-sm text-gray-400 opacity-0" style="animation: fadeIn 0.5s ease-out 1s forwards;">
+					<span class="text-neon-cyan">$</span> Loading neural pathways...
+				</div>
+				<div class="font-mono text-xs sm:text-sm text-gray-400 opacity-0" style="animation: fadeIn 0.5s ease-out 1.5s forwards;">
+					<span class="text-neon-cyan">$</span> Verifying authentication...
+				</div>
+			</div>
+
+			<!-- Progress Bar Container -->
+			<div class="mb-8 w-full max-w-xs">
+				<div class="relative h-1 bg-cyber-black border border-neon-cyan/30 rounded-full overflow-hidden">
+					<!-- Animated progress fill -->
+					<div 
+						id="progress-bar" 
+						class="h-full bg-gradient-to-r from-neon-cyan to-neon-magenta rounded-full"
+						style="width: 0%; animation: progress 2.5s cubic-bezier(0.4, 0, 0.2, 1) forwards; box-shadow: 0 0 10px rgba(0, 243, 255, 0.8);"
+					></div>
+				</div>
+			</div>
+
+			<!-- Percentage Text -->
+			<div class="mb-8">
+				<span id="progress-text" class="font-mono text-sm sm:text-base text-neon-cyan" style="text-shadow: 0 0 5px rgba(0, 243, 255, 0.6);">
+					0%
+				</span>
+			</div>
+
+			<!-- Access Granted Message (Hidden initially) -->
+			<div 
+				id="access-message" 
+				class="opacity-0"
+				style="animation: fadeInScale 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 2s forwards;"
+			>
+				<div class="inline-block px-6 py-3 border-2 border-neon-magenta rounded-lg bg-neon-magenta/5">
+					<p class="font-mono font-bold text-lg sm:text-xl text-neon-magenta">
+						▶ ACCESS GRANTED ◀
+					</p>
+				</div>
+			</div>
+		</div>
+
+		<!-- Bottom Corner Brackets -->
+		<div class="absolute bottom-8 left-8 w-8 h-8 border-b-2 border-l-2 border-neon-cyan opacity-50"></div>
+		<div class="absolute bottom-8 right-8 w-8 h-8 border-b-2 border-r-2 border-neon-cyan opacity-50"></div>
+	</div>
+
+	<!-- Curtain Reveal Overlay (slides out) -->
+	<div 
+		id="curtain-overlay" 
+		class="absolute inset-0 bg-gradient-to-r from-cyber-darker via-cyber-darker to-transparent"
+		style="clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%); animation: curtainReveaL 0.8s cubic-bezier(0.4, 0, 0.2, 1) 2.8s forwards;"
+	></div>
+</div>
+
+<script>
+	// Check if user has already seen the loader this session
+	const hasSeenLoader = sessionStorage.getItem('portfolioLoaderSeen');
+	const loader = document.getElementById('page-loader');
+	const progressText = document.getElementById('progress-text');
+
+	if (hasSeenLoader) {
+		// Skip loader if already seen this session
+		loader?.remove();
+	} else {
+		// Animate progress bar
+		let progress = 0;
+		const progressInterval = setInterval(() => {
+			progress += Math.random() * 30;
+			if (progress > 90) progress = 90;
+
+			if (progressText) {
+				progressText.textContent = Math.floor(progress) + '%';
+			}
+		}, 100);
+
+		// Complete the loader after curtain animation finishes
+		setTimeout(() => {
+			clearInterval(progressInterval);
+			if (progressText) {
+				progressText.textContent = '100%';
+			}
+			loader?.remove();
+			sessionStorage.setItem('portfolioLoaderSeen', 'true');
+		}, 3600); // 2.8s animation + 0.8s curtain = 3.6s total
+
+		// Reduce motion support
+		if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+			loader?.remove();
+			sessionStorage.setItem('portfolioLoaderSeen', 'true');
+		}
+	}
+</script>
+
+<style scoped>
+	/* Animations */
+	@keyframes scanlines {
+		0% {
+			background-position: 0 0;
+		}
+		100% {
+			background-position: 0 100px;
+		}
+	}
+
+	@keyframes glow-text {
+		0%, 100% {
+			text-shadow: 0 0 10px rgba(0, 243, 255, 0.8), 0 0 20px rgba(0, 243, 255, 0.4);
+		}
+		50% {
+			text-shadow: 0 0 20px rgba(0, 243, 255, 1), 0 0 30px rgba(0, 243, 255, 0.6), 0 0 40px rgba(255, 0, 127, 0.3);
+		}
+	}
+
+	@keyframes fadeIn {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
+	}
+
+	@keyframes fadeInScale {
+		from {
+			opacity: 0;
+			transform: scale(0.8);
+		}
+		to {
+			opacity: 1;
+			transform: scale(1);
+		}
+	}
+
+	@keyframes progress {
+		0% {
+			width: 0%;
+		}
+		100% {
+			width: 100%;
+		}
+	}
+
+	@keyframes curtainReveaL {
+		0% {
+			clip-path: polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%);
+		}
+		100% {
+			clip-path: polygon(100% 0%, 0% 0%, 0% 100%, 100% 100%);
+		}
+	}
+
+	@keyframes spin {
+		from {
+			transform: rotate(0deg);
+		}
+		to {
+			transform: rotate(360deg);
+		}
+	}
+
+	/* Reduce motion support */
+	@media (prefers-reduced-motion: reduce) {
+		* {
+			animation-duration: 0.01ms !important;
+			animation-iteration-count: 1 !important;
+			transition-duration: 0.01ms !important;
+		}
+	}
+</style>

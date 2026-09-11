@@ -1,0 +1,175 @@
+---
+// Timeline.astro - Interactive Vertical Timeline
+interface TimelineEvent {
+	title: string;
+	date: string;
+	type: 'education' | 'achievement' | 'experience';
+	description: string;
+	details?: string[];
+}
+
+const timelineEvents: TimelineEvent[] = [
+	{
+		title: 'Salem High School Graduation',
+		date: '2026',
+		type: 'education',
+		description: 'Completed secondary education with honors.',
+		details: ['Summa Cum Laude', '4.0 GPA', 'National Honor Society'],
+	},
+	{
+		title: 'B.S. Software Engineering',
+		date: '2026 - 2030',
+		type: 'education',
+		description: 'Began undergraduate studies in Software Engineering at University of Texas at Dallas.',
+		details: ['4.0 GPA', 'President\'s List'],
+	},
+	{
+		title: 'Portfolio & Personal Brand',
+		date: '2025',
+		type: 'achievement',
+		description: 'Launched this futuristic portfolio showcasing technical expertise and design sensibilities.',
+		details: ['Astro + Tailwind', 'Cyberpunk Aesthetic', 'Fully Responsive'],
+	},
+];
+
+type TimelineType = 'education' | 'achievement' | 'experience';
+
+const getTypeColor = (type: TimelineType): string => {
+	switch (type) {
+		case 'education':
+			return 'neon-cyan';
+		case 'achievement':
+			return 'neon-magenta';
+		case 'experience':
+			return 'neon-purple';
+		default:
+			return 'neon-cyan';
+	}
+};
+
+const getTypeLabel = (type: TimelineType): string => {
+	switch (type) {
+		case 'education':
+			return 'EDUCATION';
+		case 'achievement':
+			return 'ACHIEVEMENT';
+		case 'experience':
+			return 'EXPERIENCE';
+		default:
+			return 'EVENT';
+	}
+};
+---
+
+<section class="w-full px-4 sm:px-6 lg:px-8 py-20 sm:py-32 relative">
+	<!-- Section Header -->
+	<div class="max-w-4xl mx-auto mb-12 sm:mb-16">
+		<div class="flex items-center gap-3 mb-4">
+			<div class="w-3 h-3 rounded-full bg-neon-cyan animate-pulse" style="box-shadow: 0 0 10px rgba(0, 243, 255, 0.8);"></div>
+			<span class="font-mono text-xs sm:text-sm text-neon-cyan tracking-wider">CAREER JOURNEY</span>
+		</div>
+
+		<div class="mb-8">
+			<h2 class="text-4xl sm:text-5xl lg:text-6xl font-mono font-bold mb-4">
+				<span class="text-neon-cyan">[ </span>
+				<span class="text-white">TIMELINE</span>
+				<span class="text-neon-cyan"> ]</span>
+			</h2>
+			<div class="h-px w-32 sm:w-48 bg-gradient-to-r from-neon-cyan to-transparent"></div>
+		</div>
+
+		<p class="text-gray-300 text-base sm:text-lg max-w-2xl">
+			A chronological journey through my education, professional experiences, and significant achievements in technology.
+		</p>
+	</div>
+
+	<!-- Timeline -->
+	<div class="max-w-4xl mx-auto">
+		<div class="relative">
+			<!-- Vertical Line -->
+			<div class="absolute left-3 sm:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-neon-cyan via-neon-magenta to-neon-purple sm:transform sm:-translate-x-1/2"></div>
+
+			<!-- Timeline Events -->
+			<div class="space-y-8 sm:space-y-12">
+				{timelineEvents.map((event, index) => {
+					const color = getTypeColor(event.type);
+					const label = getTypeLabel(event.type);
+					const isEven = index % 2 === 0;
+
+					return (
+						<div 
+							class={`relative flex gap-4 sm:gap-0 ${isEven ? 'sm:flex-row' : 'sm:flex-row-reverse'}`}
+							style={`animation: fadeIn 0.6s ease-out ${index * 0.1}s both;`}
+						>
+							<!-- Timeline Dot -->
+							<div class={`relative z-10 flex justify-center w-7 sm:w-auto sm:flex-1 pt-2`}>
+								<div class={`w-4 h-4 sm:w-5 sm:h-5 rounded-full border-2 border-${color} bg-cyber-darker ring-4 ring-cyber-darker cursor-pointer transition-all duration-300 hover:scale-125`}
+									style={`box-shadow: 0 0 15px rgba(${color === 'neon-cyan' ? '0, 243, 255' : color === 'neon-magenta' ? '255, 0, 127' : '157, 78, 221'}, 0.6);`}
+								></div>
+							</div>
+
+							<!-- Content -->
+							<div class={`flex-1 pl-4 sm:pl-0 ${isEven ? 'sm:pr-12 sm:text-right' : 'sm:pl-12'}`}>
+								<div class="group rounded-lg border border-white/10 bg-cyber-black/50 backdrop-blur-md p-4 sm:p-6 transition-all duration-300 hover:border-white/30 hover:shadow-[0_0_20px_rgba(255,255,255,0.1)]">
+									<!-- Type Badge -->
+									<div class={`inline-block mb-3 px-3 py-1 rounded-full text-xs font-mono font-bold border`}
+										style={`color: ${color === 'neon-cyan' ? '#00f3ff' : color === 'neon-magenta' ? '#ff007f' : '#9d4edd'}; border-color: ${color === 'neon-cyan' ? 'rgba(0, 243, 255, 0.5)' : color === 'neon-magenta' ? 'rgba(255, 0, 127, 0.5)' : 'rgba(157, 78, 221, 0.5)'}; background-color: ${color === 'neon-cyan' ? 'rgba(0, 243, 255, 0.1)' : color === 'neon-magenta' ? 'rgba(255, 0, 127, 0.1)' : 'rgba(157, 78, 221, 0.1)'};`}
+									>
+										{label}
+									</div>
+
+									<!-- Date -->
+									<div class="text-sm sm:text-base font-mono font-bold text-gray-400 mb-2">
+										{event.date}
+									</div>
+
+									<!-- Title -->
+									<h3 class="text-lg sm:text-xl font-mono font-bold text-white mb-2 group-hover:text-neon-cyan transition-colors duration-300">
+										{event.title}
+									</h3>
+
+									<!-- Description -->
+									<p class="text-sm sm:text-base text-gray-300 mb-4">
+										{event.description}
+									</p>
+
+									<!-- Details -->
+									{event.details && (
+										<div class="flex flex-wrap gap-2">
+											{event.details.map((detail) => (
+												<span class="text-xs font-mono px-2 py-1 bg-white/5 border border-white/10 rounded text-gray-400 group-hover:border-white/20 transition-colors duration-300">
+													{detail}
+												</span>
+											))}
+										</div>
+									)}
+								</div>
+							</div>
+						</div>
+					);
+				})}
+			</div>
+		</div>
+	</div>
+
+	<!-- Decorative elements -->
+	<div class="absolute top-1/3 left-0 w-72 h-72 bg-neon-cyan/5 rounded-full blur-3xl pointer-events-none opacity-20"></div>
+</section>
+
+<style scoped>
+	@keyframes fadeIn {
+		from {
+			opacity: 0;
+			transform: translateX(-20px);
+		}
+		to {
+			opacity: 1;
+			transform: translateX(0);
+		}
+	}
+
+	/* Alternate animation direction for even items */
+	:global(.relative:nth-child(even)) {
+		animation-delay: var(--animation-delay);
+	}
+</style>
