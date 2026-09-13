@@ -5,6 +5,6 @@ import { defineConfig } from 'astro/config';
 export default defineConfig({
 	integrations: [
 	],
-	site: 'https://alvinoba.github.io',
-  	base: '/portfolio',
+	site: 'https://alvinoba.com',
+  	base: '/',
 });
